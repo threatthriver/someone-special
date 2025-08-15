@@ -22,5 +22,15 @@ Disallow: /
 User-agent: Twitterbot
 Disallow: /
 
+# Explicitly disallow AI training opt-out user agents
+User-agent: Google-Extended
+Disallow: /
+User-agent: GoogleOther
+Disallow: /
+User-agent: Microsoft-Extended
+Disallow: /
+User-agent: Applebot-Extended
+Disallow: /
+
 # No sitemap on purpose
 # Sitemap: (intentionally omitted)
