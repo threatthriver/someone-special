@@ -9,7 +9,7 @@ import AmbientOrbs from './components/AmbientOrbs'
 import AnimeWeather from './components/AnimeWeather'
 import Navbar from './components/Navbar'
 import Journal from './components/Journal'
-import candidPic from '../candid_pic.webp'
+import candidPic from './assets/images/candid_pic.webp'
 import journalRaw from './assets/stories/story.txt?raw'
 
 function App() {
