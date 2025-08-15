@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply m-0 min-h-screen bg-gradient-to-br from-pink-50 to-violet-50 text-gray-800 overflow-hidden antialiased;
+    font-family: 'Poppins', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-bold text-gray-900;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-6 py-3 rounded-full font-medium transition-all duration-300 ease-out hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  .btn-primary {
+    @apply bg-pink-400 text-white hover:bg-pink-500 focus:ring-pink-400;
+  }
+  .btn-secondary {
+    @apply bg-violet-400 text-white hover:bg-violet-500 focus:ring-violet-400;
+  }
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/30 shadow-xl;
+  }
+}
+
+/* Hearts floating base (used by component) */
+.hearts-container {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.heart {
+  position: absolute;
+  font-size: 1.75rem;
+  color: #f9a8d4; /* pink-300 */
+  opacity: 0.8;
+  animation: floatUp 12s linear infinite;
+  text-shadow: 0 0 12px rgba(249, 168, 212, 0.6);
+}
+@keyframes floatUp {
+  0% { transform: translateY(100vh) scale(0.6); opacity: 0.6; }
+  100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+
+/* Preloader */
+#preloader {
+  @apply fixed inset-0 flex items-center justify-center bg-white z-50 transition-opacity duration-700 ease-out;
+}
+#preloader.loaded { opacity: 0; pointer-events: none; }
+.loader-heart { font-size: 3rem; animation: beat 1.2s infinite cubic-bezier(0.215, 0.610, 0.355, 1); }
+@keyframes beat {
+  0% { transform: scale(0.95); }
+  5% { transform: scale(1.1); }
+  39% { transform: scale(0.85); }
+  45% { transform: scale(1); }
+  60% { transform: scale(0.95); }
+  100% { transform: scale(0.9); }
+}
+
+/* Confetti */
+.confetti-piece {
+  position: absolute;
+  top: -10%;
+  transform: translateY(-20vh) rotate(0deg);
+  animation-name: confettiFall;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-20vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(540deg); opacity: 0; }
+}
+
+/* Ambient orbs */
+.orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(24px);
+  opacity: 0.65;
+}
+.animate-orbFloat {
+  animation-name: orbFloat;
+  animation-duration: var(--orb-duration, 14s);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes orbFloat {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(0, -18px, 0) scale(1.04); }
+}
+
+/* Vignette overlay to softly frame the scene */
+.vignette-overlay {
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 58%, rgba(0,0,0,0.10) 100%);
+}
+
+/* Remove focus border from programmatically focused headings */
+[data-focus]:focus,
+[data-focus]:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
