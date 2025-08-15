@@ -1,9 +1,11 @@
 type Props = {
   name: string
+  active: 'story' | 'journal'
   onStart: () => void
+  onOpenJournal: () => void
 }
 
-export default function Navbar({ name, onStart }: Props) {
+export default function Navbar({ name, active, onStart, onOpenJournal }: Props) {
   return (
     <nav
       role="navigation"
@@ -15,13 +17,25 @@ export default function Navbar({ name, onStart }: Props) {
           <img src="/heart.svg" alt="" className="h-5 w-5" aria-hidden />
           <span className="text-sm sm:text-base font-semibold tracking-tight text-gray-800">{name}</span>
         </div>
-        <div className="px-4 py-2">
+        <div className="px-4 py-2 flex items-center">
           <button
             onClick={onStart}
+            aria-current={active === 'story' ? 'page' : undefined}
             className="group inline-flex items-center gap-2 rounded-full bg-pink-500 text-white text-xs sm:text-sm px-4 py-2 shadow-md shadow-pink-400/20 hover:bg-pink-600 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 transition"
           >
             Story From My Side
             <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+          </button>
+          <button
+            onClick={onOpenJournal}
+            aria-current={active === 'journal' ? 'page' : undefined}
+            className={`ml-2 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs sm:text-sm shadow-sm ring-1 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-300 ${
+              active === 'journal'
+                ? 'bg-white/70 text-pink-700 ring-pink-200 hover:bg-white'
+                : 'bg-white/40 text-gray-700 ring-black/10 hover:bg-white/60'
+            }`}
+          >
+            Journal
           </button>
         </div>
       </div>

@@ -8,21 +8,31 @@ import ConfettiBurst from './components/ConfettiBurst.tsx'
 import smile from './assets/images/smile.png'
 import AmbientOrbs from './components/AmbientOrbs'
 import Navbar from './components/Navbar'
+import Journal from './components/Journal'
 
 function App() {
   const totalCards = 8
   const [current, setCurrent] = useState(0)
   const [lastIndex, setLastIndex] = useState(0)
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null)
+  const [view, setView] = useState<'story' | 'journal'>('story')
   const [confettiKey, setConfettiKey] = useState(0)
 
   const next = () => setCurrent((c) => { setLastIndex(c); return Math.min(c + 1, totalCards - 1) })
   const prev = () => setCurrent((c) => { setLastIndex(c); return Math.max(c - 1, 0) })
   const startStory = () => {
+    setView('story')
     try {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch {}
     setCurrent(0)
+  }
+  const openJournal = () => {
+    setView('journal')
+    try {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } catch {}
+    setLightboxSrc(null)
   }
 
   const direction = current >= lastIndex ? 1 : -1
@@ -34,6 +44,7 @@ function App() {
 
   // Keyboard navigation: Enter/Space/ArrowRight to advance; ArrowLeft to go back; Esc to close lightbox
   useEffect(() => {
+    if (view !== 'story') return
     const handler = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement | null)?.tagName
       if (lightboxSrc) {
@@ -51,11 +62,11 @@ function App() {
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [lightboxSrc])
+  }, [lightboxSrc, view])
 
   // Wheel (scroll) navigation + touch swipe
   useEffect(() => {
-    if (lightboxSrc) return
+    if (lightboxSrc || view !== 'story') return
     let locked = false
     const unlock = () => { locked = false }
     const onWheel = (e: WheelEvent) => {
@@ -80,40 +91,44 @@ function App() {
       window.removeEventListener('touchstart', onTouchStart as any)
       window.removeEventListener('touchend', onTouchEnd as any)
     }
-  }, [lightboxSrc])
+  }, [lightboxSrc, view])
 
   // Auto-focus each card's heading when it becomes active
   useEffect(() => {
+    if (view !== 'story') return
     const el = document.querySelector(
       `[data-card-index="${current}"] [data-focus]`
     ) as HTMLElement | null
     if (el) setTimeout(() => el.focus({ preventScroll: true }), 50)
-  }, [current])
+  }, [current, view])
 
   // Trigger confetti when the reveal card (index 6) appears
   useEffect(() => {
+    if (view !== 'story') return
     if (current === 6) setConfettiKey((k) => k + 1)
-  }, [current])
+  }, [current, view])
 
   return (
     <>
       <a
-        href="#story-root"
+        href="#app-root"
         className="sr-only focus:not-sr-only fixed top-3 left-3 z-[60] rounded-full bg-white/90 px-3 py-1.5 shadow ring-1 ring-black/10"
       >
-        Skip to story
+        Skip to content
       </a>
-      <main id="story-root" role="main" className="relative w-full h-screen overflow-hidden">
+      <main id="app-root" role="main" className={`relative w-full h-screen ${view === 'story' ? 'overflow-hidden' : 'overflow-auto'}`}>
       <Preloader />
       <FloatingHearts />
       <AmbientOrbs />
       <div className="absolute inset-0 vignette-overlay pointer-events-none -z-10" aria-hidden />
-      <Navbar name="Riya" onStart={startStory} />
+      <Navbar name="Riya" active={view} onStart={startStory} onOpenJournal={openJournal} />
       <MusicToggle />
 
       {/* SR-only live region announcing progress */}
       <div aria-live="polite" className="sr-only">{`Step ${current + 1} of ${totalCards}`}</div>
 
+      {view === 'story' ? (
+        <>
       {/* Card 1: Intro */}
       <StoryCard isActive={current === 0} direction={direction}>
         <div data-card-index="0">
@@ -239,6 +254,12 @@ function App() {
 
       {/* Confetti burst on reveal */}
       <ConfettiBurst key={confettiKey} active={current === 6} />
+        </>
+      ) : (
+        <div className="absolute inset-0 overflow-auto">
+          <Journal />
+        </div>
+      )}
     </main>
     </>
   )
