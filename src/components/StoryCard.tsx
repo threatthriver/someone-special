@@ -1,12 +1,13 @@
-import { useRef, type PropsWithChildren, type MouseEvent } from 'react'
-import { motion, useReducedMotion, useMotionValue, useTransform } from 'framer-motion'
+import { useRef, memo, type PropsWithChildren, type PointerEvent } from 'react'
+import { motion, useReducedMotion, useMotionValue, useTransform, useMotionTemplate } from 'framer-motion'
 
 type StoryCardProps = PropsWithChildren<{
   isActive: boolean
   direction?: number // 1 forward, -1 backward
+  label?: string
 }>
 
-export default function StoryCard({ isActive, direction = 1, children }: StoryCardProps) {
+function StoryCard({ isActive, direction = 1, label, children }: StoryCardProps) {
   const prefersReducedMotion = useReducedMotion()
 
   // Subtle 3D tilt based on cursor position (respects reduced motion)
@@ -15,9 +16,19 @@ export default function StoryCard({ isActive, direction = 1, children }: StoryCa
   const mvY = useMotionValue(0)
   const rotX = useTransform(mvY, [-0.5, 0.5], [6, -6])
   const rotY = useTransform(mvX, [-0.5, 0.5], [-6, 6])
+  // Dynamic shadow offsets
+  const shadowX = useTransform(mvX, [-0.5, 0.5], ['-12px', '12px'])
+  const shadowY = useTransform(mvY, [-0.5, 0.5], ['-12px', '12px'])
+  const boxShadow = useMotionTemplate`${shadowX} ${shadowY} 40px rgba(0,0,0,0.18), 0 12px 24px rgba(0,0,0,0.08)`
+  // Cursor-tracked glare
+  const glareX = useTransform(mvX, [-0.5, 0.5], ['20%', '80%'])
+  const glareY = useTransform(mvY, [-0.5, 0.5], ['20%', '80%'])
+  const glareBg = useMotionTemplate`radial-gradient(240px circle at ${glareX} ${glareY}, rgba(255,255,255,0.18), rgba(255,255,255,0) 55%)`
 
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+  const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
     if (prefersReducedMotion || !isActive) return
+    // Only animate tilt/glare for mouse pointers for better mobile perf
+    if (e.pointerType !== 'mouse') return
     const el = cardRef.current
     if (!el) return
     const rect = el.getBoundingClientRect()
@@ -27,7 +38,7 @@ export default function StoryCard({ isActive, direction = 1, children }: StoryCa
     mvY.set(py)
   }
 
-  const handleMouseLeave = () => {
+  const handlePointerLeave = () => {
     mvX.set(0)
     mvY.set(0)
   }
@@ -72,9 +83,11 @@ export default function StoryCard({ isActive, direction = 1, children }: StoryCa
       animate={currentVariant}
       style={{ pointerEvents: isActive ? 'auto' : 'none' }}
       aria-hidden={!isActive}
+      role={label ? 'region' : undefined}
+      aria-label={label}
     >
       {/* Gradient border wrapper */}
-      <div className={`group relative rounded-3xl p-[2px] max-w-3xl w-full mx-auto ${
+      <div className={`group relative rounded-3xl p-[2px] max-w-3xl w-full mx-auto focus-within:ring-2 focus-within:ring-pink-300/60 focus-within:ring-offset-2 focus-within:ring-offset-transparent ${
         isActive
           ? 'bg-[conic-gradient(at_10%_10%,#f9a8d4,#c4b5fd,#f9a8d4)]'
           : 'bg-white/30'
@@ -92,18 +105,34 @@ export default function StoryCard({ isActive, direction = 1, children }: StoryCa
             rotateX: prefersReducedMotion ? 0 : rotX,
             rotateY: prefersReducedMotion ? 0 : rotY,
             transformPerspective: 900,
+            boxShadow: prefersReducedMotion ? undefined : boxShadow,
+            willChange: prefersReducedMotion ? undefined : 'transform',
+            transformStyle: 'preserve-3d',
+            backfaceVisibility: 'hidden',
+            touchAction: 'manipulation',
           }}
           whileHover={prefersReducedMotion ? undefined : { scale: 1.01 }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
+          whileTap={{ scale: 0.995 }}
+          onPointerMove={handlePointerMove}
+          onPointerLeave={handlePointerLeave}
         >
           {children}
           {/* Sheen overlay */}
           <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
             <div className="sheen" />
           </div>
+          {/* Cursor-tracked glare (hover only, desktop) */}
+          {!prefersReducedMotion && (
+            <motion.div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              style={{ background: glareBg }}
+            />
+          )}
         </motion.div>
       </div>
     </motion.section>
   )
 }
+
+export default memo(StoryCard)
