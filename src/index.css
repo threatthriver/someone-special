@@ -279,3 +279,28 @@ html { scroll-behavior: smooth; }
   .animate-breathe,
   .story-card-glow { animation: none !important; }
 }
+
+/* Sheen highlight for StoryCard */
+.sheen {
+  position: absolute;
+  top: -20%;
+  left: -50%;
+  width: 140%;
+  height: 140%;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    rgba(255,255,255,0) 45%,
+    rgba(255,255,255,0.35) 50%,
+    rgba(255,255,255,0) 55%
+  );
+  transform: translateX(-120%) rotate(8deg);
+  filter: blur(2px);
+}
+.group:hover .sheen { animation: sheenSweep 1100ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+@keyframes sheenSweep {
+  to { transform: translateX(120%) rotate(8deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .group:hover .sheen { animation: none !important; }
+}
