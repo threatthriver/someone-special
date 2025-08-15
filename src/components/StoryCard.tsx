@@ -51,11 +51,11 @@ export default function StoryCard({ isActive, direction = 1, children }: StoryCa
       aria-hidden={!isActive}
     >
       <div
-        className="card glass relative overflow-hidden max-w-3xl w-full mx-auto text-center
+        className={`card glass relative overflow-hidden max-w-3xl w-full mx-auto text-center
         rounded-3xl shadow-2xl ring-1 ring-white/40
         px-6 py-12 md:px-10 md:py-16
         before:content-[''] before:absolute before:-top-24 before:-left-24 before:h-72 before:w-72 before:rounded-full before:bg-pink-200/40 before:blur-3xl
-        after:content-[''] after:absolute after:-bottom-24 after:-right-24 after:h-72 after:w-72 after:rounded-full after:bg-violet-200/40 after:blur-3xl"
+        after:content-[''] after:absolute after:-bottom-24 after:-right-24 after:h-72 after:w-72 after:rounded-full after:bg-violet-200/40 after:blur-3xl${isActive ? ' story-card-glow' : ''}`}
       >
         {children}
       </div>

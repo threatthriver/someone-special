@@ -25,6 +25,10 @@
   .glass {
     @apply bg-white/70 backdrop-blur-md border border-white/30 shadow-xl;
   }
+  /* Utility: apply UI font (inherit from body) */
+  .font-ui {
+    font-family: inherit;
+  }
 }
 
 /* Hearts floating base (used by component) */
@@ -119,4 +123,107 @@ html { scroll-behavior: smooth; }
 @keyframes navFadeSlide {
   from { opacity: 0; transform: translateY(-8px) scale(0.98); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Hide scrollbars for horizontal pill navs */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Anime Weather Vibes */
+.anime-weather { overflow: hidden; }
+
+/* Sakura petals */
+.weather-petal {
+  position: absolute;
+  top: -8%;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 2px 6px rgba(236,72,153,0.25));
+  animation-name: petalFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  opacity: 0.9;
+}
+@keyframes petalFall {
+  0% { transform: translate3d(0, -12vh, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.95; }
+  50% { transform: translate3d(25px, 45vh, 0) rotate(60deg); }
+  100% { transform: translate3d(-15px, 110vh, 0) rotate(120deg); opacity: 0; }
+}
+
+/* Rain */
+.weather-raindrop {
+  position: absolute;
+  top: -10%;
+  width: 2px;
+  background: linear-gradient(to bottom, rgba(59,130,246,0.0), rgba(59,130,246,0.5)); /* sky-500 */
+  border-radius: 9999px;
+  will-change: transform, opacity;
+  animation-name: rainFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes rainFall {
+  0% { transform: translateY(-10vh); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(110vh); opacity: 0.8; }
+}
+
+/* Snow */
+.weather-snow {
+  position: absolute;
+  top: -8%;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 2px 6px rgba(99,102,241,0.15));
+  animation-name: snowFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  opacity: 0.95;
+}
+@keyframes snowFall {
+  0% { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 0; }
+  20% { opacity: 1; }
+  50% { transform: translate3d(var(--drift, 20px), 50vh, 0) rotate(20deg); }
+  100% { transform: translate3d(calc(var(--drift, 20px) * -1), 110vh, 0) rotate(40deg); opacity: 0.85; }
+}
+
+/* Clouds */
+.weather-cloud {
+  position: absolute;
+  left: -40vw;
+  border-radius: 9999px;
+  background: radial-gradient(ellipse at 40% 40%, rgba(255,255,255,0.9), rgba(255,255,255,0.6) 60%, rgba(255,255,255,0.0) 70%);
+  filter: blur(6px);
+  animation-name: cloudDrift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes cloudDrift {
+  0% { transform: translateX(-10vw); }
+  100% { transform: translateX(120vw); }
+}
+
+/* Subtle rhythm animations for Story (respect reduced motion) */
+@keyframes softPulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(236,72,153,0.0)); }
+  50% { transform: scale(1.035); filter: drop-shadow(0 0 12px rgba(236,72,153,0.35)); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(236,72,153,0.0); }
+  50% { transform: scale(1.12); box-shadow: 0 0 12px rgba(236,72,153,0.35); }
+}
+
+@keyframes cardGlow {
+  0%, 100% { box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 0 0 0 rgba(236,72,153,0.0); }
+  50% { box-shadow: 0 24px 56px rgba(0,0,0,0.18), 0 0 0 6px rgba(236,72,153,0.12); }
+}
+
+.animate-softPulse { animation: softPulse 2400ms ease-in-out infinite; }
+.animate-breathe   { animation: breathe 3600ms ease-in-out infinite; }
+.story-card-glow    { animation: cardGlow 4800ms ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-softPulse,
+  .animate-breathe,
+  .story-card-glow { animation: none !important; }
 }
