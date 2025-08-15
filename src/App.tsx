@@ -11,6 +11,7 @@ import Navbar from './components/Navbar'
 import Journal from './components/Journal'
 import candidPic from './assets/images/candid_pic.webp'
 import journalRaw from './assets/stories/story.txt?raw'
+import BlurText from './components/BlurText'
 
 function App() {
   const totalCards = 8
@@ -152,7 +153,9 @@ function App() {
       {/* Card 1: Intro */}
       <StoryCard isActive={current === 0} direction={direction}>
         <div data-card-index="0">
-          <h1 tabIndex={-1} data-focus className="font-serif text-5xl md:text-7xl tracking-tight">Hey, Riya</h1>
+          <h1 tabIndex={-1} data-focus className="font-serif text-5xl md:text-7xl tracking-tight">
+            <BlurText text="Hey, Riya" animateBy="words" direction="top" />
+          </h1>
           <p className="mt-4 text-lg text-gray-600">I've been wanting to tell you something...</p>
           <button onClick={next} className="btn btn-primary mt-8 shadow-lg animate-softPulse">Click to start</button>
         </div>
@@ -239,7 +242,9 @@ function App() {
       {/* Card 6: Final Message */}
       <StoryCard isActive={current === 5} direction={direction}>
         <div data-card-index="5">
-        <h2 tabIndex={-1} data-focus className="font-serif text-4xl md:text-6xl font-bold tracking-tight">To be honest...</h2>
+        <h2 tabIndex={-1} data-focus className="font-serif text-4xl md:text-6xl font-bold tracking-tight">
+          <BlurText text="To be honest..." animateBy="words" direction="top" />
+        </h2>
         <p className="mt-6 text-xl text-gray-700 max-w-xl mx-auto">Being around you just feels... right. You make everything better, just by being you.</p>
         <div className="text-6xl mt-8">💖</div>
         <button onClick={next} className="btn btn-secondary mt-8 shadow-lg animate-softPulse">I guess what I'm trying to say is...</button>
@@ -249,7 +254,9 @@ function App() {
       {/* Card 7: Surprise */}
       <StoryCard isActive={current === 6} direction={direction}>
         <div data-card-index="6">
-        <h2 tabIndex={-1} data-focus className="font-serif text-4xl md:text-5xl tracking-tight">I really, really like you.</h2>
+        <h2 tabIndex={-1} data-focus className="font-serif text-4xl md:text-5xl tracking-tight">
+          <BlurText text="I really, really like you." animateBy="words" direction="top" />
+        </h2>
         <p className="mt-6 text-2xl text-pink-500 font-serif">And I was hoping we could hang out sometime?</p>
         <button onClick={next} className="btn mt-8 opacity-0">.</button>
         </div>
