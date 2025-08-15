@@ -113,6 +113,14 @@
   100% { width: 100%; }
 }
 
+/* Respect reduced motion for preloader */
+@media (prefers-reduced-motion: reduce) {
+  .loader-heart { animation: none !important; }
+  .loader-title { animation: none !important; }
+  .loading-dots span { animation: none !important; }
+  .loader-bar .bar-fill { animation: none !important; width: 100% !important; }
+}
+
 /* Confetti */
 .confetti-piece {
   position: absolute;

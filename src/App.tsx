@@ -165,7 +165,9 @@ function App() {
       <StoryCard isActive={current === 1} direction={direction}>
         <div data-card-index="1" className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
           <div className="w-full md:w-1/2">
-            <h2 tabIndex={-1} data-focus className="font-serif text-3xl md:text-4xl leading-tight tracking-tight">My world kind of stops for a second...</h2>
+            <h2 tabIndex={-1} data-focus className="font-serif text-3xl md:text-4xl leading-tight tracking-tight">
+              <BlurText text="My world kind of stops for a second..." animateBy="words" direction="top" />
+            </h2>
             <p className="mt-4 text-gray-600">...whenever you smile. It's like everything else fades away. I'm not even kidding.</p>
             <button onClick={next} className="btn btn-secondary mt-8 shadow-lg animate-softPulse">Next →</button>
           </div>
@@ -183,7 +185,9 @@ function App() {
       <StoryCard isActive={current === 2} direction={direction}>
         <div data-card-index="2" className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12">
           <div className="w-full md:w-1/2">
-            <h2 tabIndex={-1} data-focus className="font-serif text-3xl md:text-4xl leading-tight tracking-tight">And I could talk to you forever.</h2>
+            <h2 tabIndex={-1} data-focus className="font-serif text-3xl md:text-4xl leading-tight tracking-tight">
+              <BlurText text="And I could talk to you forever." animateBy="words" direction="top" />
+            </h2>
             <p className="mt-4 text-gray-600">Hours feel like minutes. You have this way of making everything interesting and making me feel so comfortable.</p>
             <button onClick={next} className="btn btn-primary mt-8 shadow-lg animate-softPulse">And... →</button>
           </div>
@@ -200,7 +204,9 @@ function App() {
       {/* Card 4: Gallery */}
       <StoryCard isActive={current === 3} direction={direction}>
         <div data-card-index="3">
-          <h2 tabIndex={-1} data-focus className="font-serif text-4xl md:text-5xl tracking-tight">I find myself thinking about these moments...</h2>
+          <h2 tabIndex={-1} data-focus className="font-serif text-4xl md:text-5xl tracking-tight">
+            <BlurText text="I find myself thinking about these moments..." animateBy="words" direction="top" />
+          </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 w-full max-w-2xl">
           {/* Journal excerpt card (replaces image) */}
           <div className="rounded-xl shadow-lg w-full h-full bg-white/80 backdrop-blur p-4">
@@ -265,7 +271,9 @@ function App() {
       {/* Card 8: Final */}
       <StoryCard isActive={current === 7} direction={direction}>
         <div data-card-index="7">
-        <h2 tabIndex={-1} data-focus className="font-serif text-2xl md:text-3xl text-gray-500 tracking-tight">Made with 💖, just for you.</h2>
+        <h2 tabIndex={-1} data-focus className="font-serif text-2xl md:text-3xl text-gray-500 tracking-tight">
+          <BlurText text="Made with 💖, just for you." animateBy="words" direction="top" />
+        </h2>
         </div>
       </StoryCard>
 

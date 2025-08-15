@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import userStory from '../assets/stories/story.txt?raw'
+import BlurText from './BlurText'
 
 export default function Journal() {
   // Ensure we start at top when opening the journal
@@ -129,7 +130,9 @@ export default function Journal() {
           <div className="rounded-3xl bg-white/70 backdrop-blur-xl ring-1 ring-black/5 shadow-xl p-6 sm:p-8 md:p-10 max-w-3xl mx-auto">
             {/* Section: From My Side */}
             <article id="from-my-side" className="scroll-mt-24">
-              <h2 className="font-serif text-3xl md:text-4xl tracking-tight">A Note From My Side</h2>
+              <h2 className="font-serif text-3xl md:text-4xl tracking-tight">
+                <BlurText text="A Note From My Side" animateBy="words" direction="top" />
+              </h2>
               <div className="prose prose-p:text-gray-700 prose-headings:font-serif prose-headings:tracking-tight max-w-none">
               <p className="mt-4 leading-relaxed first-letter:text-4xl first-letter:font-serif first-letter:mr-1 first-letter:float-left">
                 I know I haven’t said this properly, and maybe these words are long overdue. I never looked at you in any wrong way, nor thought of you like that. If there were mistakes in my actions, please know they were never reflections of my heart. I’ve already paid for them in full, in quiet moments of regret. I’ve always seen you with a deep, unwavering respect—almost like something sacred. In my world, you were a light I felt I was not meant to touch, only to admire from a distance. Even now, after all this time, there’s no one like you in my eyes.
@@ -150,7 +153,9 @@ export default function Journal() {
 
             {/* Section: Maybe My Behaviour */}
             <article id="maybe-my-behaviour" className="scroll-mt-24">
-              <h2 className="font-ui text-3xl md:text-4xl tracking-tight text-gray-900">You Said Your Behaviour Wasn’t Something Someone Could Love… But I Loved You Anyway</h2>
+              <h2 className="font-ui text-3xl md:text-4xl tracking-tight text-gray-900">
+                <BlurText text="You Said Your Behaviour Wasn’t Something Someone Could Love… But I Loved You Anyway" animateBy="words" direction="top" />
+              </h2>
               <div className="whitespace-pre-wrap font-ui leading-relaxed md:leading-8 text-gray-800 sm:text-[1.05rem] first-letter:text-4xl first-letter:font-serif first-letter:mr-1 first-letter:float-left">
                 {storyBody}
               </div>
