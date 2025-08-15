@@ -7,6 +7,7 @@ import TypewriterText from './components/TypewriterText'
 import ConfettiBurst from './components/ConfettiBurst.tsx'
 import smile from './assets/images/smile.png'
 import AmbientOrbs from './components/AmbientOrbs'
+import Navbar from './components/Navbar'
 
 function App() {
   const totalCards = 8
@@ -17,8 +18,19 @@ function App() {
 
   const next = () => setCurrent((c) => { setLastIndex(c); return Math.min(c + 1, totalCards - 1) })
   const prev = () => setCurrent((c) => { setLastIndex(c); return Math.max(c - 1, 0) })
+  const startStory = () => {
+    try {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } catch {}
+    setCurrent(0)
+  }
 
   const direction = current >= lastIndex ? 1 : -1
+
+  // Set page title with her name
+  useEffect(() => {
+    document.title = 'Someone Special — Riya'
+  }, [])
 
   // Keyboard navigation: Enter/Space/ArrowRight to advance; ArrowLeft to go back; Esc to close lightbox
   useEffect(() => {
@@ -96,6 +108,7 @@ function App() {
       <FloatingHearts />
       <AmbientOrbs />
       <div className="absolute inset-0 vignette-overlay pointer-events-none -z-10" aria-hidden />
+      <Navbar name="Riya" onStart={startStory} />
       <MusicToggle />
 
       {/* SR-only live region announcing progress */}
@@ -104,7 +117,7 @@ function App() {
       {/* Card 1: Intro */}
       <StoryCard isActive={current === 0} direction={direction}>
         <div data-card-index="0">
-          <h1 tabIndex={-1} data-focus className="font-serif text-5xl md:text-7xl tracking-tight">Hey,</h1>
+          <h1 tabIndex={-1} data-focus className="font-serif text-5xl md:text-7xl tracking-tight">Hey, Riya</h1>
           <p className="mt-4 text-lg text-gray-600">I've been wanting to tell you something...</p>
           <button onClick={next} className="btn btn-primary mt-8 shadow-lg">Click to start</button>
         </div>
