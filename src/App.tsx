@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy, Suspense } from 'react'
 import Preloader from './components/Preloader'
 import FloatingHearts from './components/FloatingHearts'
 import StoryCard from './components/StoryCard'
@@ -8,7 +8,7 @@ import smile from './assets/images/smile.png'
 import AmbientOrbs from './components/AmbientOrbs'
 import AnimeWeather from './components/AnimeWeather'
 import Navbar from './components/Navbar'
-import Journal from './components/Journal'
+const JournalLazy = lazy(() => import('./components/Journal'))
 import candidPic from './assets/images/candid_pic.webp'
 import journalRaw from './assets/stories/story.txt?raw'
 import BlurText from './components/BlurText'
@@ -176,6 +176,8 @@ function App() {
               src={smile}
               alt="A picture of her smiling"
               className="rounded-2xl shadow-xl w-full h-auto object-cover"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </div>
@@ -196,6 +198,8 @@ function App() {
               src={candidPic}
               alt="A candid picture of her"
               className="rounded-2xl object-cover shadow-2xl w-full h-auto"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </div>
@@ -307,7 +311,9 @@ function App() {
         </>
       ) : (
         <div className="absolute inset-0 overflow-auto">
-          <Journal />
+          <Suspense fallback={null}>
+            <JournalLazy />
+          </Suspense>
         </div>
       )}
     </main>
